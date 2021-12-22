@@ -1,0 +1,4 @@
+model:
+  name: 'SGDClassifier'
+  params:
+    alpha: 0.001
