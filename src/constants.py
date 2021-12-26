@@ -22,6 +22,7 @@ c_SAVE_MODEL = "model.joblib"
 c_SAVE_METRICS = "metrics.json"
 c_PREDICTIONS_DATA = "prediction_inputs.json"
 c_LEXIQUE = 'lexique.json'
+c_LABELS = 'labels.json'
 c_PREDICTIONS = 'predictions.json'
 
 # Train/Test sest

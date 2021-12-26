@@ -1,12 +1,10 @@
-import copy
 import logging
 
 import pandas as pd
 
 from src.constants import (c_DETAIL_ECRITURE,
                            c_TARGET,
-                           c_TEST_DATA,
-                           c_TEXT_TRANSFORMES
+                           c_TEST_DATA
                           )
 
 from src.io import get_data

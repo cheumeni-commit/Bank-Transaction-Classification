@@ -1,9 +1,6 @@
 import re
 
-from src.config.directories import directories as dirs
-from src.constants import (c_DETAIL_ECRITURE,
-                           c_TEXT_TRANSFORMES
-                          )
+from src.constants import c_TEXT_TRANSFORMES
 
 
 def _preprocess_test(data, column_ecriture):

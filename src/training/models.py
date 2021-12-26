@@ -6,7 +6,7 @@ import xgboost as xgb
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import SGDClassifier
 
-from src.config.config import get_config
+from src.cli import context
 
 _MODELS_REGISTRY_ = {'RandomForestClassifier': RandomForestClassifier,
                      'Xgb_Classifier': xgb.XGBClassifier,
@@ -20,7 +20,7 @@ def _loadModels()-> List:
 
     Model = []
     name_model = []
-    for _, v in get_config().model.items():
+    for _, v in context.config.model.items():
         Model.append(_MODELS_REGISTRY_[v.get('name')](**v.get('params')))
         name_model.append(v.get('name'))
     return Model, name_model

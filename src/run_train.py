@@ -4,7 +4,7 @@ Model training script.
 import time
 import logging
 
-from src.config.directories import directories as dirs
+from src.cli import context
 from src.training.data import build_dataset
 from src.io import save_training_output
 from src.training.models import get_model
@@ -21,7 +21,7 @@ def main():
    
     dataset = build_dataset()
     model_metrics = train(models, name_models, dataset)
-    save_training_output(model_metrics, directory=dirs.raw_store_dir)
+    save_training_output(model_metrics, directory=context.dirs.raw_store_dir)
     run_duration = time.time() - start
     logger.info("Training job done...")
     logger.info(f"Took {run_duration} seconds to execute")

@@ -3,7 +3,6 @@ from dataclasses import dataclass
 import logging
 import yaml
 
-from src.config.directories import directories as dirs
 from src.constants import c_DEV
 
 
@@ -15,26 +14,16 @@ class Config:
     model: dict
 
 
-def load_config_file():
-
+def load_config_file(context):
     read_data = []
     try:
-        with open(str(dirs.config) + "/" + c_DEV, 'r') as fp:
+        with open(str(context.dirs.config) + "/" + c_DEV, 'r') as fp:
             read_data.append(yaml.safe_load(fp))
     except:
             logger.info("yml file don't find inside directories")
-
     return read_data
 
 
-def context_choice(ENV):
-
-    return None
-
-
-def get_config() -> Config:
-    
-    #configs = context_choice(env)
-    config = load_config_file()
-
+def get_config(context) -> Config:
+    config = load_config_file(context)
     return Config(*config)

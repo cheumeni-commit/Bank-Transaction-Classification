@@ -3,7 +3,7 @@ import joblib
 
 import numpy as np
 
-from src.config.directories import directories as dirs
+from src.cli import context
 from src.constants import (c_SAVE_MODEL,
                            c_DETAIL_ECRITURE,
                            c_TEXT_TRANSFORMES
@@ -11,8 +11,15 @@ from src.constants import (c_SAVE_MODEL,
 from src.training.features import build_train_test_set
 
 
+def decode(y, dictionary):
+    classes = []
+    for _, item in enumerate(y):
+        classes.append(dictionary[str(item)])
+    return classes
+
+
 def _load_model():
-    loaded_model = joblib.load(str(dirs.raw_store_dir) + '/' + c_SAVE_MODEL)
+    loaded_model = joblib.load(str(context.dirs.raw_store_dir) + '/' + c_SAVE_MODEL)
     return loaded_model
 
 

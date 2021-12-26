@@ -1,15 +1,30 @@
 import logging
 
-from src.config.directories import directories as dirs
-#from src.run_dataset import main as main_datatset
+from src.cli import context
+from src.run_dataset import main as main_datatset
 from src.run_train import main as main_train
 from src.run_predict import main as main_predict
-from src.training.models import get_model
+
 
 logger = logging.getLogger(__name__)
 
+
+def _choice_env():
+    if context.command == 'run_dataset':
+        main_datatset()
+    elif context.command == 'run_train':
+        main_train()
+    elif context.command == 'run_predict':
+        if context.input_data == None:
+            main_predict(None)
+        else:
+            main_predict(context.input_data)
+
+
 if __name__ == '__main__':
-    logger.debug("I a testing the logging config")
-    main_train()
-    main_predict()
-    #get_model()
+    logger.debug("main of project")
+
+    if context.environment == 'dev':
+        _choice_env()
+    elif context.environment == 'production':
+        _choice_env()

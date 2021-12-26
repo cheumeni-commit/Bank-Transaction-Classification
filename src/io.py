@@ -4,7 +4,7 @@ import json
 
 import pandas as pd
 
-from src.config.directories import directories as dirs
+from src.cli import context
 from src.constants import (c_DATASET,
                            c_SAVE_METRICS,
                            c_SAVE_MODEL
@@ -24,11 +24,11 @@ def get_data():
   
 def save_dataset(dataset, *, path):
     dataset.to_csv(path, index=False)
-    logger.info(f"Dataset saved at {path.relative_to(dirs.root_dir)}")
+    logger.info(f"Dataset saved at {path.relative_to(context.dirs.root_dir)}")
 
 
 def load_dataset():
-    return pd.read_csv(dirs.inputs / c_DATASET,\
+    return pd.read_csv(context.dirs.inputs / c_DATASET,\
                     encoding = "ISO-8859-1",
                     sep=';'
                     )

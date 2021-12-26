@@ -8,7 +8,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
 from sklearn.model_selection import ParameterGrid
 
-from src.config.directories import directories as dirs
+from src.cli import context
 from src.training.features import build_train_test_set
 from src.training.evaluation import evaluate_model
 from src.io import save_lexique
@@ -19,7 +19,8 @@ from src.constants import (c_SIZE,
                            c_FEATURES_PERCENTILES,
                            c_SEED,
                            c_DETAIL_ECRITURE,
-                           c_LEXIQUE
+                           c_LEXIQUE,
+                           c_LABELS
                           )
                         
 global vectorizer,  feature_selector
@@ -64,7 +65,7 @@ def _bow_transformation(X_train, X_test):
     vectorizer = Count_Vectorizer()
     X_train_bow = vectorizer.fit_transform(X_train)
     X_test_bow = vectorizer.transform(X_test)
-    save_lexique(vectorizer.get_feature_names(), path=dirs.config / c_LEXIQUE)
+    save_lexique(vectorizer.get_feature_names(), path=context.dirs.config / c_LEXIQUE)
     return X_train_bow.toarray(), X_test_bow.toarray()
 
 
@@ -101,6 +102,7 @@ class LabelEncoder(object):
         for i, class_ in enumerate(classes):
             self.class_to_index[class_] = i
         self.index_to_class = {v: k for k, v in self.class_to_index.items()}
+        save_lexique(self.index_to_class, path=context.dirs.config / c_LABELS)
         self.classes = list(self.class_to_index.keys())
         return self
 
@@ -109,12 +111,6 @@ class LabelEncoder(object):
         for i, item in enumerate(y):
             encoded[i] = self.class_to_index[item]
         return encoded
-
-    def decode(self, y):
-        classes = []
-        for i, item in enumerate(y):
-            classes.append(self.index_to_class[item])
-        return classes
 
 
 def algorithm_pipeline(GridMethod, X_train_data, 
