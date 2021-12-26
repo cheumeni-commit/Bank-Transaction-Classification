@@ -10,13 +10,10 @@ from src.constants import (c_DATASET,
                            c_SAVE_MODEL
                           )
 
-
-
 logger = logging.getLogger(__name__)
 
 
 def get_data():
-
     logger.info("Loading data")
 
     text_data = load_dataset()
@@ -45,6 +42,11 @@ def save_model(model, *, path):
 def save_metrics(metrics, *, path):
     with open(path, 'w') as f:
         json.dump(metrics, f, indent=2)
+        
+
+def save_lexique(lexique, *, path):
+    with open(path, 'w') as f:
+        json.dump(lexique, f, indent=2)
 
 
 def save_metrics_per_class(metrics, *, path):
@@ -61,11 +63,13 @@ def load_model(path):
     return joblib.load(path)
     
 
-def load_predictions_data(path):
+def load_json_file(path):
     with open(path) as fp:
         return json.load(fp)
-        
 
-def save_prediction(path):
-    return None
+
+def save_prediction(predictions,*, path):
+    #https://docs.python.org/3/library/json.html
+    with open(path, 'w') as fp:
+        json.dump(predictions, fp, indent=2)
 

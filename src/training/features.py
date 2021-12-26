@@ -1,15 +1,13 @@
 import re
 
 from src.config.directories import directories as dirs
-
 from src.constants import (c_DETAIL_ECRITURE,
-						   c_TEXT_TRANSFORMES
+                           c_TEXT_TRANSFORMES
                           )
 
 
 def _preprocess_test(data, column_ecriture):
-
-	"""Conditional preprocessing on our text."""
+	"""Conditional preprocessing on our text"""
 	
 	transaction = []
 	if column_ecriture != None:

@@ -1,12 +1,13 @@
+from collections import Counter
 import joblib
 
-import pandas as pd
+import numpy as np
 
 from src.config.directories import directories as dirs
 from src.constants import (c_SAVE_MODEL,
-                           c_DETAIL_ECRITURE
+                           c_DETAIL_ECRITURE,
+                           c_TEXT_TRANSFORMES
                           )
-from src.train import vectorizer
 from src.training.features import build_train_test_set
 
 
@@ -15,9 +16,9 @@ def _load_model():
     return loaded_model
 
 
-def _model_inference(model, X, do_probabilities=False):
+def _model_inference(model, X, lexiques, do_probabilities=False):
 
-    X = predict_dataset(X, c_DETAIL_ECRITURE)
+    X = predict_dataset(X, lexiques, c_DETAIL_ECRITURE)
 
     if do_probabilities:
         pred = model.predict_proba(X)
@@ -26,19 +27,27 @@ def _model_inference(model, X, do_probabilities=False):
     return pred
 
 
-def predict(X, *, do_probabilities=False):
+def predict(X, lexiques, *, do_probabilities=False):
     model = _load_model()
-    result = _model_inference(model, X, do_probabilities)
+    result = _model_inference(model, X, lexiques, do_probabilities)
     return result
 
 
-def _encoding(corpus):
-    #vectorizer = Count_Vectorizer()
-    #feature_selector = Select_Percentile()
-
-    X_bow = vectorizer.transform(corpus).toarray()
-    X_features = feature_selector.transform(X_bow)
+def _encoding(corpus, lexiques):
+    X_features = _encodage_text(corpus, lexiques)
     return X_features
+
+
+def _encodage_text(corpus, lexique):
+
+    Mat = np.zeros([len(corpus), len(lexique)], dtype=np.float64)
+    for i in range(len(corpus)):
+        for j in range(len(lexique)):
+            counts_dict = {k:v for k,v in Counter(corpus[i].split(" ")).most_common(5000)}
+            if lexique[j] in counts_dict:
+                Mat[i, j] = counts_dict.get(lexique[j])
+
+    return Mat
     
 
 def predict_transaction(transaction):
@@ -47,8 +56,8 @@ def predict_transaction(transaction):
     return X_features
 
 
-def predict_dataset(dataset, transactionColumn):
+def predict_dataset(dataset, lexiques, transactionColumn):
     dataset = build_train_test_set(dataset, column_ecriture=transactionColumn)
-    X = dataset.loc[:,transactionColumn].values
-    X_features = _encoding(X)
+    X = dataset.loc[:,c_TEXT_TRANSFORMES].values
+    X_features = _encoding(X, lexiques)
     return X_features

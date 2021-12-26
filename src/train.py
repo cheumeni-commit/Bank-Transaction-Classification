@@ -8,23 +8,27 @@ from sklearn.model_selection import train_test_split
 from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
 from sklearn.model_selection import ParameterGrid
 
+from src.config.directories import directories as dirs
 from src.training.features import build_train_test_set
 from src.training.evaluation import evaluate_model
+from src.io import save_lexique
 from src.constants import (c_SIZE,
                            c_TEXT_TRANSFORMES,
                            c_TARGET,
                            c_BOX_MAX_FEATURES,
                            c_FEATURES_PERCENTILES,
                            c_SEED,
-                           c_DETAIL_ECRITURE
+                           c_DETAIL_ECRITURE,
+                           c_LEXIQUE
                           )
+                        
 global vectorizer,  feature_selector
 
 logger = logging.getLogger(__name__)
 
 
 def _split_target(features_set):
-
+    np.random.random(200)
     #Separate dataset into training and test
     (X_train, X_test, y_train, y_test) = _split_train_test(features_set)
     # label encoder
@@ -50,6 +54,7 @@ def _split_train_test(features_set):
     X = features_set.loc[:, c_TEXT_TRANSFORMES].values
     y = features_set.loc[:, c_TARGET].values
     # use stratify if min individu per class is sup than 2
+    #https://stackoverflow.com/questions/34842405/parameter-stratify-from-method-train-test-split-scikit-learn
     if np.min(np.unique(y, return_counts=True)[1]) >=2:
         return train_test_split(X, y, test_size = c_SIZE, random_state=c_SEED, stratify=y)
     else: return train_test_split(X, y, test_size = c_SIZE, random_state=c_SEED)
@@ -59,6 +64,7 @@ def _bow_transformation(X_train, X_test):
     vectorizer = Count_Vectorizer()
     X_train_bow = vectorizer.fit_transform(X_train)
     X_test_bow = vectorizer.transform(X_test)
+    save_lexique(vectorizer.get_feature_names(), path=dirs.config / c_LEXIQUE)
     return X_train_bow.toarray(), X_test_bow.toarray()
 
 
@@ -74,7 +80,7 @@ def _extract_features(X_train_bow, X_test_bow, y_train):
     feature_selector = Select_Percentile()
     X_train_features = feature_selector.fit_transform(X_train_bow, y_train)
     X_test_features = feature_selector.transform(X_test_bow)
-    return X_train_features, X_test_features
+    return X_train_bow, X_test_bow
 
 
 class LabelEncoder(object):
@@ -152,7 +158,7 @@ def _train_model(model, X, y):
     return model
 
 
-def train(model, dataset):
+def train(models, name_models, dataset):
 
     # transformation of transactions lines
     dataset_with_feature = build_train_test_set(dataset, column_ecriture=c_DETAIL_ECRITURE)
@@ -162,28 +168,41 @@ def train(model, dataset):
     logger.info(f"Train's shape: {X_train.shape}")
     logger.info(f"Test's shape: {X_test.shape}")
 
+    metrics = []
+    best_model = []
+    name_model = []
+    for model, name in zip(models, name_models):
 
-    logger.info(f"Training model...")
-    fitted_model = _train_model(model, X_train, y_train)
-    logger.info("Model trained.")
+        logger.info(f"Training model...")
+        fitted_model = _train_model(model, X_train, y_train)
+        best_model.append(fitted_model)
+        name_model.append(name)
+        logger.info("Model trained.")
 
-    lbl = LabelEncoder()
-    
-    train_metrics, test_metrics = (
-        evaluate_model(fitted_model, X=features[0], y=features[1], classes=lbl.classes)
-        for features in ((X_train, y_train), (X_test, y_test))
-    )
+        lbl = LabelEncoder()
+        
+        train_metrics, test_metrics = (
+            evaluate_model(fitted_model, X=features[0], y=features[1], classes=lbl.classes)
+            for features in ((X_train, y_train), (X_test, y_test))
+        )
+        metrics.append(test_metrics)
 
-    metrics_msg = "=" * 50 + " Metrics " + "=" * 50
-    logger.info(metrics_msg)
-    logger.info(f"Train: {train_metrics.get('overall')}")
-    logger.info(f"Test: {test_metrics.get('overall')}")
-    logger.info("=" *len(metrics_msg))
+        metrics_msg = "=" * 50 + " Metrics " + "=" * 50
+        logger.info(metrics_msg)
+        logger.info(fitted_model)
+        logger.info(f"Train: {train_metrics.get('overall')}")
+        logger.info(f"Test: {test_metrics.get('overall')}")
+        logger.info("=" *len(metrics_msg))
+
+    # choix du meilleur model avec le f1_score
+    f1_score = [res.get('overall').get('f1') for res in metrics]
+    index_best_model = np.argmax(f1_score)
     
     return {
-        'model': fitted_model,
+        'model': best_model[index_best_model],
         'metrics': {
-            'train': train_metrics.get('overall'),
-            'test': test_metrics.get('overall')
+            'name_model': name_model[index_best_model],
+            'train': metrics[index_best_model].get('overall'),
+            'test': metrics[index_best_model].get('overall')
         }
     }

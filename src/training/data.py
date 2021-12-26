@@ -4,13 +4,12 @@ import logging
 import pandas as pd
 
 from src.constants import (c_DETAIL_ECRITURE,
-						   c_TARGET,
-						   c_TEST_DATA,
-						   c_TEXT_TRANSFORMES
+                           c_TARGET,
+                           c_TEST_DATA,
+                           c_TEXT_TRANSFORMES
                           )
 
 from src.io import get_data
-
 
 logger = logging.getLogger(__name__)
 
@@ -25,7 +24,6 @@ def _get_text_transactions(data:pd.DataFrame)->pd.DataFrame:
 
 	
 def build_dataset():
-
 	"Build dataset with text transformation"
 
 	logger.info("Copy of initial Dataset")

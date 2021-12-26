@@ -5,7 +5,6 @@ import time
 import logging
 
 from src.config.directories import directories as dirs
-from src.constants import c_INTERMEDIATE
 from src.training.data import build_dataset
 from src.io import save_training_output
 from src.training.models import get_model
@@ -18,11 +17,10 @@ logger = logging.getLogger(__name__)
 def main():
     start = time.time()
     logger.info("Starting training job...")
-    model = get_model()
+    models, name_models = get_model()
    
-    dataset_path = dirs.data_dir / c_INTERMEDIATE
     dataset = build_dataset()
-    model_metrics = train(model, dataset)
+    model_metrics = train(models, name_models, dataset)
     save_training_output(model_metrics, directory=dirs.raw_store_dir)
     run_duration = time.time() - start
     logger.info("Training job done...")

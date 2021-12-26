@@ -24,17 +24,15 @@ def get_metrics(y_true, y_pred, classes):
             "f1": np.mean(metrics[2]),
             "num_samples": np.float64(np.mean(metrics[3])),
         }
-
     return performance
-
+    
 
 _METRICS = {
     'get_metrics': get_metrics,
 }
 
-def evaluate_model(fitted_model, *, X, y, classes):
 
+def evaluate_model(fitted_model, *, X, y, classes):
     y_pred = fitted_model.predict(X)
     metrics = {name: func(y, y_pred, classes) for name, func in _METRICS.items()}
-
     return metrics.get("get_metrics")
