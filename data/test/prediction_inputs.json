@@ -1,0 +1,37 @@
+[
+    {
+      "Libelle": 1,
+      "Date": "10/12/2021",
+      "Detail_de_ecriture": "CARTE X9471 18/12 PHARMACIE PCLE 110135501381263IOPD",
+      "Montant_de_operation": 500.0,
+      "Devise": "EUR"
+    },
+    {
+      "Libelle": 1,
+      "Date": "10/12/2021",
+      "Detail_de_ecriture": "CARTE X9471 16/12 SUPERPROF* COURS COURS MOTHE COMMERCE ELECTRONIQUE 110135004218193IOPD",
+      "Montant_de_operation": 500.0,
+      "Devise": "EUR"
+    },
+    {
+      "Libelle": 1,
+      "Date": "10/12/2021",
+      "Detail_de_ecriture": "CARTE X9471 19/12 SANDWIHERIE DE L 101135334219560IOPD",
+      "Montant_de_operation": 1000.0,
+      "Devise": "EUR"
+    },
+    {
+      "Libelle": 1,
+      "Date": "10/12/2021",
+      "Detail_de_ecriture": "CHEQUE  257",
+      "Montant_de_operation": 3000.0,
+      "Devise": "EUR"
+    },
+    {
+      "Libelle": 1,
+      "Date": "10/12/2021",
+      "Detail_de_ecriture": "VIR RECU    7486787333S DE: SOLYSTIC MOTIF: 2021-471 REF: 0300004975",
+      "Montant_de_operation": 3000.0,
+      "Devise": "EUR"
+    }
+  ]
