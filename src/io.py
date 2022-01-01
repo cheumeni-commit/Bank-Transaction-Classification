@@ -59,13 +59,19 @@ def save_training_output(output, *, directory):
     save_metrics(output['metrics'], path = str(directory) + '/' + c_SAVE_METRICS)
     
 
-def load_model(path):
-    return joblib.load(path)
+def load_model(path, default={}):
+    try:
+        return joblib.load(path)
+    except ValueError:
+        return default
     
 
-def load_json_file(path):
-    with open(path) as fp:
-        return json.load(fp)
+def load_json_file(path, default={}):
+    try:
+        with open(path) as fp:
+            return json.load(fp)
+    except ValueError:
+        return default
 
 
 def save_prediction(predictions,*, path):
