@@ -15,7 +15,7 @@ def _choice_env():
     elif context.command == 'run_train':
         main_train()
     elif context.command == 'run_predict':
-        if context.input_data == None:
+        if context.input_data is None:
             main_predict(None)
         else:
             main_predict(context.input_data)

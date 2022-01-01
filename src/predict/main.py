@@ -48,11 +48,12 @@ def _encoding(corpus, lexiques):
 def _encodage_text(corpus, lexique):
 
     Mat = np.zeros([len(corpus), len(lexique)], dtype=np.float64)
-    for i in range(len(corpus)):
-        for j in range(len(lexique)):
-            counts_dict = {k:v for k,v in Counter(corpus[i].split(" ")).most_common(5000)}
-            if lexique[j] in counts_dict:
-                Mat[i, j] = counts_dict.get(lexique[j])
+
+    for i, corp in enumerate(corpus):
+        for j, lex in enumerate(lexique):
+            counts_dict = {k:v for k,v in Counter(corp.split(" ")).most_common(5000)}
+            if lex in counts_dict:
+                Mat[i, j] = counts_dict.get(lex)
 
     return Mat
     

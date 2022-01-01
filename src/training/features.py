@@ -7,12 +7,13 @@ def _preprocess_test(data, column_ecriture):
 	"""Conditional preprocessing on our text"""
 	
 	transaction = []
-	if column_ecriture != None:
+	if column_ecriture is not None:
 		for text in data[column_ecriture]:
 			text = _preprocess(text)
 			transaction.append(text)
 		data[c_TEXT_TRANSFORMES] = transaction
-	else: data[c_TEXT_TRANSFORMES] = _preprocess(data)
+	else: 
+		data[c_TEXT_TRANSFORMES] = _preprocess(data)
 	return data
 
 

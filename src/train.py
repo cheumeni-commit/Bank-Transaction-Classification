@@ -58,7 +58,8 @@ def _split_train_test(features_set):
     #https://stackoverflow.com/questions/34842405/parameter-stratify-from-method-train-test-split-scikit-learn
     if np.min(np.unique(y, return_counts=True)[1]) >=2:
         return train_test_split(X, y, test_size = c_SIZE, random_state=c_SEED, stratify=y)
-    else: return train_test_split(X, y, test_size = c_SIZE, random_state=c_SEED)
+    else: 
+        return train_test_split(X, y, test_size = c_SIZE, random_state=c_SEED)
 
 
 def _bow_transformation(X_train, X_test):
