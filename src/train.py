@@ -165,7 +165,7 @@ def train(models, name_models, dataset):
     logger.info(f"Train's shape: {X_train.shape}")
     logger.info(f"Test's shape: {X_test.shape}")
 
-    metrics = []
+    metrics_train, metrics_test = [],[]
     best_model = []
     name_model = []
     for model, name in zip(models, name_models):
@@ -182,7 +182,8 @@ def train(models, name_models, dataset):
             evaluate_model(fitted_model, X=features[0], y=features[1], classes=lbl.classes)
             for features in ((X_train, y_train), (X_test, y_test))
         )
-        metrics.append(test_metrics)
+        metrics_test.append(test_metrics)
+        metrics_train.append(train_metrics)
 
         metrics_msg = "=" * 50 + " Metrics " + "=" * 50
         logger.info(metrics_msg)
@@ -192,14 +193,14 @@ def train(models, name_models, dataset):
         logger.info("=" *len(metrics_msg))
 
     # choix du meilleur model avec le f1_score
-    f1_score = [res.get('overall').get('f1') for res in metrics]
+    f1_score = [res.get('overall').get('f1') for res in metrics_test]
     index_best_model = np.argmax(f1_score)
     
     return {
         'model': best_model[index_best_model],
         'metrics': {
             'name_model': name_model[index_best_model],
-            'train': metrics[index_best_model].get('overall'),
-            'test': metrics[index_best_model].get('overall')
+            'train': metrics_train[index_best_model].get('overall'),
+            'test': metrics_test[index_best_model].get('overall')
         }
     }

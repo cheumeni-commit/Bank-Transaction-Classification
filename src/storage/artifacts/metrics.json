@@ -1,10 +1,10 @@
 {
-  "name_model": "SGDClassifier",
+  "name_model": "RandomForestClassifier",
   "train": {
-    "precision": 0.8241806320559396,
-    "recall": 0.8301886792452831,
-    "f1": 0.81859601355181,
-    "num_samples": 53.0
+    "precision": 0.9291610414657666,
+    "recall": 0.9508196721311475,
+    "f1": 0.9390164227074823,
+    "num_samples": 122.0
   },
   "test": {
     "precision": 0.8241806320559396,
