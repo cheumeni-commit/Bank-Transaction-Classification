@@ -9,7 +9,7 @@ from sklearn.linear_model import SGDClassifier
 from src.cli import context
 
 _MODELS_REGISTRY_ = {'RandomForestClassifier': RandomForestClassifier,
-                     'Xgb_Classifier': xgb.XGBClassifier,
+                     'xgb_Classifier': xgb.XGBClassifier,
                      'SGDClassifier': SGDClassifier
                      }
 
@@ -17,22 +17,21 @@ logger = logging.getLogger(__name__)
 
 
 def _loadModels()-> List:
-
-    Model = []
+    model = []
     name_model = []
+    param_model = []
     for _, v in context.config.model.items():
-        Model.append(_MODELS_REGISTRY_[v.get('name')](**v.get('params')))
+        model.append(_MODELS_REGISTRY_[v.get('name')])
         name_model.append(v.get('name'))
-    return Model, name_model
+        param_model.append(v.get('params'))
+    return model, name_model, param_model
 
 
 def get_model():
-    
     """ Load Model """
     try:
-        Model, name_model = _loadModels()
-        print(Model)
+        model, name_model, param_model = _loadModels()
     except:
         logger.info("The model is not available ")
 
-    return Model, name_model
+    return model, name_model, param_model

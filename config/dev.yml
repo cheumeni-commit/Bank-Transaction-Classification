@@ -1,5 +1,5 @@
 model_1:
-  name: 'Xgb_Classifier'
+  name: 'xgb_Classifier'
   params:
     learning_rate: 0.1
     gamma : 0.5

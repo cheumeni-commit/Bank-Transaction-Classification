@@ -1,22 +1,27 @@
 [
-  [
-    "sante",
-    0.5673853317854815
-  ],
-  [
-    "quotidien",
-    0.5
-  ],
-  [
-    "quotidien",
-    1.0
-  ],
-  [
-    "quotidien",
-    0.5794284379820456
-  ],
-  [
-    "travail",
-    1.0
-  ]
+  {
+    "transaction": "CARTE X9471 18/12 PHARMACIE PCLE 110135501381263IOPD",
+    "class": "sante",
+    "score": 0.5424447676159068
+  },
+  {
+    "transaction": "CARTE X9471 16/12 SUPERPROF* COURS COURS MOTHE COMMERCE ELECTRONIQUE 110135004218193IOPD",
+    "class": "quotidien",
+    "score": 0.848923367168719
+  },
+  {
+    "transaction": "CARTE X9471 19/12 SANDWIHERIE DE L 101135334219560IOPD",
+    "class": "quotidien",
+    "score": 0.9454963402819149
+  },
+  {
+    "transaction": "CHEQUE  257",
+    "class": "quotidien",
+    "score": 0.5206592133258839
+  },
+  {
+    "transaction": "VIR RECU    7486787333S DE: SOLYSTIC MOTIF: 2021-471 REF: 0300004975",
+    "class": "travail",
+    "score": 1.0
+  }
 ]

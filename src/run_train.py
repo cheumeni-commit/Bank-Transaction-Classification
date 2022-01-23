@@ -17,10 +17,11 @@ logger = logging.getLogger(__name__)
 def main():
     start = time.time()
     logger.info("Starting training job...")
-    models, name_models = get_model()
-   
+    
+    models, name_models, param_models = get_model()
+
     dataset = build_dataset()
-    model_metrics = train(models, name_models, dataset)
+    model_metrics = train(models, name_models, param_models, context, dataset)
     save_training_output(model_metrics, directory=context.dirs.raw_store_dir)
     run_duration = time.time() - start
     logger.info("Training job done...")

@@ -20,11 +20,12 @@ from src.io import load_json_file, save_prediction
 logger = logging.getLogger(__name__)
 
 
-def prediction_transform(prob, mapping):
+def prediction_transform(prob, mapping, X):
 
     y_pred = proba_max(prob)
-    predictions = [(k,v) for k,v in zip(decode(y_pred, mapping), 
-                    (pb[y_] for pb,y_ in zip(prob, y_pred)))]
+    predictions = [{'transaction':X[i] , 'class':k,'score':float(v)} \
+                    for k,v, i in zip(decode(y_pred, mapping), 
+                    (pb[y_] for pb,y_ in zip(prob, y_pred)), range(len(X)))]
     return predictions
 
 
@@ -53,7 +54,7 @@ def main(args):
     X = pd.DataFrame(X)
     # predict
     prob = predict(X, lexiques, do_probabilities=True)
-    predictions = prediction_transform(prob, labels)
+    predictions = prediction_transform(prob, labels, X.Detail_de_ecriture)
     # save predictions
     save_prediction(predictions, path=context.dirs.raw_store_dir /c_PREDICTIONS)
 

@@ -22,9 +22,10 @@ def _choice_env():
 
 
 if __name__ == '__main__':
+    
     logger.debug("main of project")
 
     if context.environment == 'dev':
         _choice_env()
-    elif context.environment == 'production':
+    elif context.environment == 'prod':
         _choice_env()
